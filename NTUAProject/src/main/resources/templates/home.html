@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+//on Submit Click separate text by comma and send information to spring controller
+//then redirect to /result page after all results hace commited to DB
+function myFun(){
+	var text = document.getElementById('text').value;
+	var dateFrom = document.getElementById('dateFrom').value;
+	var dateTo = document.getElementById('dateTo').value;
+	if(text && dateFrom && dateTo){
+		var splitDiseases = text.split(",").map(item => item.trim());
+		if(splitDiseases.length >= 2 && splitDiseases.length <= 11){
+			$.ajax({
+				   type: "POST",
+				   data: {diseases : splitDiseases,
+					   	  dateFrom : dateFrom, 
+					   	  dateTo : dateTo},
+				   url: "/result",
+				   async: false
+				});
+			window.location.href = '/result';			
+		}
+		else{
+			document.getElementsByClassName("lds-spinner")[0].style.display = "none";
+			alert("Text must filled out from 2 to 11 terms")			
+		}
+	}
+	else{
+		document.getElementsByClassName("lds-spinner")[0].style.display = "none";
+		alert("Text/dates must be filled out in the correct form")
+	}
+}
+
+function spinFun(){
+	document.getElementsByClassName("lds-spinner")[0].style.display = "inline-block";
+}
+</script>
+        <title>Ntua Appathon</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel='stylesheet' type='text/css' href='/globalCss.css'>
+    </head>
+    <body>
+       <div class="wrap">
+   	<div class="label">
+   <label>Search for articles</label>
+   </div>
+   	<div class="search">
+      <input type="text" class="searchTerm" id="text" placeholder="Write up to 11 terms separated by comma">
+      <button onClick="spinFun(); myFun();" class="searchButton" >
+        <i class="fa fa-search"></i>
+     </button>
+     <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+   </div>
+   <br><br><br>
+   <div class="label">
+   <label>Date From:</label>
+   </div>
+   <input type="date" id="dateFrom" name="dateFrom">
+   <br><br>
+   <div class="label">
+   <label>Date To:</label>
+   </div>
+   <input type="date" id="dateTo" name="dateTo">
+   <div class="Allresults">
+   <a th:href="@{results}">Show All Articles from Search History</a>
+   </div>
+</div>
+    </body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Articles</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel='stylesheet' type='text/css' href='/globalCss.css'>
+        <script>
+			function goBack() {
+  			window.history.back();
+			}
+		</script>
+    </head>
+    
+    <body>
+    <button class="BackButton" onclick="goBack()">Back</button>
+
+
+        <h2>List of Articles</h2>
+
+        <h2 th:text="${totalArticles}"></h2> 
+
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Authors</th>
+                <th>Article Publish</th>
+                <th>Site Url</th>
+            </tr>
+            
+            <tr th:each="article : ${articles}">
+                <td th:text="${article.articleId}"></td>
+                <td th:text="${article.title}"></td>
+                <td th:text="${article.authorName}"></td>
+                <td th:text="${article.timestamp}"></td>
+                <td><a th:href ="${article.siteLink}"><span th:text="${article.siteLink}"></span></a></td>
+            </tr>
+        </table>
+
+    </body>
+</html>
